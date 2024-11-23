@@ -1,0 +1,166 @@
+print("************************FLIGHT TICKET RESERVATION************************")
+l=['name','age','gender','NewID','password','status']
+Avail=300
+booked=int(0)
+Amount=int(1500)
+d=[]
+z=[]
+ID=int(1001)
+while 1:
+    p=True
+    print('1.Passenger')
+    print('2.Cashier')
+    print('3.Exit')
+    print('Select :')
+    n=int(input())
+    if n==1:
+        while p==True:
+            print('1.Signup')
+            print('2.Login')
+            print('3.go back')
+            print('Select :')
+            s=int(input())
+            while 1:
+                    if s==1: #signup part.......
+                        t=[]
+                        name=input('Enter Name :')
+                        while 1:
+                            age=int(input('Age :'))
+                            if age > 18:
+                                break
+                            else:
+                                print('####...You are under 18...#####')
+                        n=input("Enter your gender :")
+                        gender=n.casefold()
+                        password=int(input('password :'))
+                        print('Successfully signed up...')
+                        NewID=(name[0]+gender[0]+str(ID))
+                        NewID=NewID.upper()
+                        t.append(name)
+                        t.append(age)
+                        t.append(gender)
+                        t.append(NewID)
+                        t.append(password)
+                        status="no tickets booked"
+                        t.append(status)
+                        d.append(dict(zip(l,t)))
+                        print(d)
+                        ID+=1
+                        print('Your ID is :',NewID)
+                        print('Your password is :',password)
+                        break
+                    elif s==2:
+                        print("1.login\n2.exit\n")
+                        r=int(input())
+                        if r==1:
+                            if p==True: #login part......
+                                while p==True:
+                                    a=input('Your ID :')
+                                    b=int(input('Your Password :'))
+                                    f=False;c=0
+                                    for i in range(len(d)):
+                                        if  d[i]['NewID']==a and d[i]['password']==b :
+                                            print("login successful....")
+                                            f=True
+                                            if f==True and c==0:
+                                                while True:
+                                                    print("1.Book tickets\n2.Check booking status\n3.Goback")
+                                                    e=int(input("Enter your choice :"))
+                                                    if e==1:
+                                                        print("Total no.of seats : ",Avail)
+                                                        print("price per ticket :",Amount)
+                                                        print("No.of available seats:",Avail)
+                                                        a=tk=int(input("No.of Tickets you want to book?:"))
+                                                        d[i]['tickets']=tk
+                                                        while a!=0 or tk!=0:
+                                                            print('Pay Rupees :',a*Amount)
+                                                            c=a*Amount
+                                                            b=int(input('Pay here to conform your ticket :'))
+                                                            p=False
+                                                            f=False
+                                                            if c==b:
+                                                                break
+                                                        if d[i]['status']==True:
+                                                            Avail=Avail-tk
+                                                        d[i]['status']=False
+                                                        print("Your booking is in pending list...")
+                                                    elif e==2:
+                                                        if d[i]['status']==True:
+                                                            print("Your ticket is approved")
+                                                        elif d[i]['status']=="no tickets booked":
+                                                            print("No tickets booked")
+                                                        else:
+                                                            print("Your ticket is in still pending list...")
+                                                    elif e==3:
+                                                        break
+                    
+                                        else:
+                                          print("Invalid Id or Password")
+
+                        if r==2:
+                            break
+                    
+                    elif s==3:
+                        p=False
+                        break
+                    else:
+                        print("Invalid")
+    elif n==2:   #cashier login........
+        cp='Sneha2311'
+        pd=input('Enter your password')
+        if pd==cp:
+            print("login successful")
+        while True:
+            print("1.Approve ticket\n2.Cancel ticket\n3.logout")
+            s=int(input("Enter your choice:"))
+            if s==1:
+                    for i in range (len(d)):
+                        if d[i]['status']==False:
+                            for j,tk in d[i].items():
+                                if j != 'password':
+                                    print(j,":",tk,end=" ")
+                            print('\n')
+                    a=input("Enter passenger Id to approve:")
+                    f=True
+                    for i in range(len(d)):
+                        if a==d[i]['NewID']:
+                            f=False
+                            if d[i]['tickets']!=0:
+                                d[i]['status']=True
+                                print("ticket approved")
+                                break
+                            else:
+                                print("No tickets booked")
+                    if f:
+                        print("Invalid passenger Id")
+            elif s==2:
+                for i in range (len(d)):
+                    if d[i]['status']==False:
+                        for j,tk in d[i].items():
+                            if j != 'password':
+                                print(j,":",tk,end=" ")
+                        print('\n')
+                    a=input("Enter passenger Id to cancel ticket:")
+                    f=True
+                    for i in range (len(d)):
+                        if a==d[i]['NewID']:
+                            f=False
+                            if d[i]['tickets']!=0:
+                                a= d[i]['tickets']
+                                d[i]['tickets']=0
+                                d[i]['status'] = "no tickets booked"
+                                print("Ticket cancelled successfully")
+                                break
+                            else:
+                                print("No tickets booked")
+                    if f:
+                        print("Invalid passenger Id")
+            elif s==3:
+                p=False
+                break
+            else:
+                print("Invalid Entry")
+    elif n==3:
+        break
+    else:
+            print('Invalid entry')
